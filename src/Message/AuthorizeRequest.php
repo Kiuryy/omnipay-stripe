@@ -135,6 +135,26 @@ class AuthorizeRequest extends AbstractRequest
      *
      * @return mixed
      */
+    public function getCapture()
+    {
+        return $this->getParameter('capture');
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return AbstractRequest provides a fluent interface.
+     */
+    public function setCapture($value)
+    {
+        return $this->setParameter('capture', $value);
+    }
+
+    /**
+     * Connect only
+     *
+     * @return mixed
+     */
     public function getOnBehalfOf()
     {
         return $this->getParameter('onBehalfOf');
@@ -236,11 +256,16 @@ class AuthorizeRequest extends AbstractRequest
         $data['currency'] = strtolower($this->getCurrency());
         $data['description'] = $this->getDescription();
         $data['metadata'] = $this->getMetadata();
-        $data['capture'] = 'false';
+        $data['capture'] = "false";
+
+        if ($this->getCapture()) {
+            $data['capture'] = $this->getCapture();
+        }
 
         if ($this->getStatementDescriptor()) {
             $data['statement_descriptor'] = $this->getStatementDescriptor();
         }
+
         if ($this->getDestination()) {
             $data['destination'] = $this->getDestination();
         }
